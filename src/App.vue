@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">MyCourse</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Course</router-link> |
+      <router-link to="/about">About</router-link> |
+      <p v-on:click="logout()"><router-link to="/login" >Logout</router-link></p>
     </div>
     <router-view/>
   </div>
 </template>
-
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -30,3 +30,14 @@
   color: #42b983;
 }
 </style>
+<script>
+export default {
+  methods: {
+      logout () {
+      console.log('logout')
+      localStorage.removeItem('token')
+      
+  }
+}
+}
+</script>

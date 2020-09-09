@@ -56,9 +56,10 @@ export default {
         methods: {
             async login () {
                try {
-                 var response = await AuthenticationService.check(this.username,this.password  )
+                 var response = await AuthenticationService.check(this.input.username,this.input.password  )
                   if(response){
                     console.log(response)
+                    localStorage.setItem('token',response)
                     this.$router.replace({ name: "Course" });
                   }     
                } catch (err) {
@@ -66,6 +67,6 @@ export default {
                }
                
             }
-        },
+        }
     }
 </script>

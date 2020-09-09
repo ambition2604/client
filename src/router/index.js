@@ -5,7 +5,7 @@ import Login from '../views/Login.vue'
 
 
 Vue.use(VueRouter)
-
+  
   const routes = [
   {
     path: '/',
@@ -33,5 +33,9 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+router.beforeResolve((to, from, next) => {
+  if (to.name !== 'Login' && !localStorage.length) next({ name: 'Login' })
+  // if the user is not authenticated, `next` is called twice
+  else next()
+  })
 export default router

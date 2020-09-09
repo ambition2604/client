@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
       <h1>Course</h1>
       <hr>
       <p class="error" v-if="error">{{ error }}</p>
