@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MyCourse from '../views/MyCourse.vue'
 import Login from '../views/Login.vue'
+import Home from '../views/Home.vue'
+import Order from '../views/Order.vue'
+
 
 
 Vue.use(VueRouter)
@@ -13,17 +16,19 @@ Vue.use(VueRouter)
     component: MyCourse
   },
   {
+    path: '/home',
+    name: 'Home',
+    component: Home
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/order',
+    name: 'Order',
+    component: Order
   }
   
 ]
@@ -33,8 +38,8 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-router.beforeResolve((to, from, next) => {
-  if (to.name !== 'Login' && !localStorage.length) next({ name: 'Login' })
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && localStorage.getItem('token')=='None') next({ name: 'Login' })
   // if the user is not authenticated, `next` is called twice
   else next()
   })

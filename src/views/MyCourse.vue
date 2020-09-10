@@ -1,6 +1,23 @@
 <template>
   <div class="container" >
       <h1>Course</h1>
+      <div class="addcourse-form">
+			<form>
+				<input type="text" name="name_course" v-model="input.title" placeholder="NameCourse" required>
+				<input type="text" name="des_course" v-model="input.des" placeholder="Description" required>
+        <select id="cars" v-model="selected">
+        <option v-for="(shop,index) in shops"
+        v-bind:item="shop"
+        v-bind:index="index"
+        v-bind:value="shop.id"
+        v-bind:key="shop._id" >{{shop.name}}</option>
+        
+        </select>
+        <hr>
+				<button type="button" v-on:click="add()">Add Course</button>
+			</form>
+      <span>Selected: {{ selected }}</span>
+		</div>
       <hr>
       <p class="error" v-if="error">{{ error }}</p>
       <div class="posts-container">
@@ -11,7 +28,9 @@
         v-bind:key="post._id">
 
         <p class="text">{{ post.title }}</p>
-        <p class="text">{{ post.des }}</p>
+        <p class="text">Description : {{ post.des }}</p>
+        <p class="text">Created date: {{post.createDate}}</p>
+        <p class="text">Status: {{post.status}}</p>
         
         </div>
       </div>
@@ -20,20 +39,44 @@
 
 <script>
 import CourseService from '../service/CourseService'
+import ShopService from '../service/ShopService'
+import UserService from '../service/UserService'
 export default {
   name: 'MyCourse',
   data() {
     return {
       posts: [],
+      users: [],
       error: '',
-      text: ''
+      text: '',
+      shops: [],
+      selected: '', 
+      input: {
+                    title: "",
+                    des: "",
+                    shop_name:""
+                }
     } 
   },
   async created() {
     try {
       this.posts = await CourseService.getCourses();
+      this.shops = await ShopService.getShop();
+      this.users = await UserService.getUsers();
     } catch (err) {
       this.error = err.message;
+    }
+  },
+  methods: {
+    async add () {
+        var host_name = localStorage.getItem('username');
+
+        try { 
+            var response = await CourseService.addCourse(this.input.title,this.input.des,this.selected,host_name);
+            console.log(response);
+        } catch (err) {
+            this.error = err.message;
+        }
     }
   },
 }
@@ -76,4 +119,33 @@ p.text {
   font-weight: 700;
   margin-bottom: 0;
 }
+
+.addcourse-form {
+			width: 300px;
+			margin: 0 auto;
+			font-family: Tahoma, Geneva, sans-serif;
+		}
+		.addcourse-form h1 {
+			text-align: center;
+			color: #4d4d4d;
+			font-size: 24px;
+			padding: 20px 0 20px 0;
+		}
+		.addcourse-form input[type="text"] {
+			width: 100%;
+			padding: 15px;
+			border: 1px solid #dddddd;
+			margin-bottom: 15px;
+			box-sizing:border-box;
+		}
+		.addcourse-form input[type="submit"] {
+			width: 100%;
+			padding: 15px;
+			background-color: #535b63;
+			border: 0;
+			box-sizing: border-box;
+			cursor: pointer;
+			font-weight: bold;
+			color: #ffffff;
+		}
 </style>

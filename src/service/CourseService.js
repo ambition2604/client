@@ -10,9 +10,12 @@ class CourseService{
     }
 
     //Create course
-    static insertCourse(text)   {
+    static addCourse(title,des,shop_id,host_id)   {
         return axios.post(url,{
-            text
+            "title":title,
+            "des":des,
+            "shop_id":shop_id,
+            "host_id":host_id
         });
     }
     //Delete course

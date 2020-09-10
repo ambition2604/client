@@ -58,7 +58,7 @@ export default {
                try {
                  var response = await AuthenticationService.check(this.input.username,this.input.password  )
                   if(response){
-                    console.log(response)
+					localStorage.setItem('username',this.input.username)
                     localStorage.setItem('token',response)
                     this.$router.replace({ name: "Course" });
                   }     
