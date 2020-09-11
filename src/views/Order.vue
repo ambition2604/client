@@ -1,5 +1,10 @@
 <template>
-  <div class="about">
-    <h1>This is an Order page</h1>
-  </div>
+<div>
+  <b-button v-b-modal.modal-1><b-icon icon="plus-square"></b-icon></b-button>
+
+  <b-modal id="modal-1" title="BootstrapVue">
+    <p class="my-4">Hello from modal!</p>
+  </b-modal>
+  
+</div>
 </template>

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/">Course</router-link> |
+      <router-link to="/">Home</router-link> |
+      <router-link to="/course">Course</router-link> |
       <router-link to="/order">Order</router-link> |
-      <p v-on:click="logout()"><router-link to="/login" >Logout</router-link></p>
+      <a v-on:click="logout()"><router-link to="/login" >Logout</router-link></a>
     </div>
     <router-view/>
   </div>
@@ -35,9 +35,7 @@
 export default {
   methods: {
       logout () {
-      console.log('logout')
-      localStorage.setItem('token','None')
-      
+      localStorage.setItem('token','None');     
   }
 }
 }
