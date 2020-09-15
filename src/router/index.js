@@ -4,7 +4,7 @@ import MyCourse from '../views/MyCourse.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Order from '../views/Order.vue'
-
+import Menu from '../views/Menu.vue'
 
 Vue.use(VueRouter)
   
@@ -24,6 +24,16 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/child',
+    name: 'Child',
+    component: require('../views/Child.vue').default
+  },
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: Menu
   },
   {
     path: '/order',
