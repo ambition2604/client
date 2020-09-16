@@ -56,5 +56,13 @@ router.beforeEach((to, from, next) => {
     if (to.name == 'Login' && localStorage.getItem('token')!=='None') next({ name: 'Home' })
     // if the user is not authenticated, `next` is called twice
     else next()
-    }) 
+    })
+  router.beforeEach((to, from, next) => {
+      if (from.name == 'Menu' ) {
+        localStorage.removeItem('m_id');
+        next();
+      }
+      // if the user is not authenticated, `next` is called twice
+      else next()
+      }) 
 export default router

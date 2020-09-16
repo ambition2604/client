@@ -4,11 +4,12 @@
       <div><img src="./static/food2.jpeg" alt="noimage"></div>
     </div>
     <div style="margin-bottom: 0.5px;">
-    <nav class="navbar navbar-dark bg-warning" style="font-family: Comic Sans MS">
+    <nav class="navbar navbar-dark bg-warning navv" style="font-family: Comic Sans MS;">
       <router-link class="navbar-brand" to="/">Home</router-link> 
       <router-link class="navbar-brand" to="/course">Course</router-link> 
       <router-link class="navbar-brand" to="/order">Order</router-link> 
       <p v-on:click="logout()"><router-link class="navbar-brand" to="/login" >Logout</router-link></p>
+      <b-button v-b-modal.modal-1><b-icon icon="cart2"></b-icon></b-button>
     </nav>
     </div>
     <router-view></router-view>
@@ -62,6 +63,7 @@ body {
   padding: 1px 6px !important;
   font-size: 1em;
 }
+
 @media screen and (max-width: 991px) {
   .bg-img-desktop {
     display: none
@@ -71,6 +73,7 @@ body {
   .bg-img-mobile {
     display: none
   }
+
 }
 </style>
 <script>

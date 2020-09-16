@@ -17,16 +17,16 @@
         v-bind:key="item._id">
         <div >
           <img class="img" src="https://cdn.tgdd.vn/Files/2020/05/16/1255894/cach-lam-com-lam-thom-ngon-deo-ngot-don-gian-chuan-vi-tay-bac.jpg" width="60%" height="60%" alt="">
-        <h5>{{ item.name }}</h5>
+        <h5 style="font-family: Comic Sans MS;">{{ item.name }}</h5>
          <b-input-group class="button">
   <b-input-group-prepend>
-    <b-btn variant="outline-info" @click="decrement()">-</b-btn>
+    <b-btn variant="outline-info" @click="decrement(item)">-</b-btn>
   </b-input-group-prepend>
 
-  <b-form-input type="number" v-model="quantity"></b-form-input>
+  <b-form-input type="number" v-model="item.quantity" min="0" ></b-form-input>
 
   <b-input-group-append>
-    <b-btn variant="outline-secondary"  @click="increment()">+</b-btn>
+    <b-btn variant="outline-secondary"  @click="increment(item)">+</b-btn>
   </b-input-group-append>
 </b-input-group>
 
@@ -39,42 +39,65 @@
 import MenuService from '../service/MenuService'
 import ItemService from '../service/ItemService'
 export default {
-    components:{
-    },
     data() {
         return {
-           title:'',
-           id: null,
+           title: localStorage.getItem('title_course'),
+           id:  localStorage.getItem('shop_id'),
            menus:[],
-           n:[],
            items:[],
-           quantity: null
+           total: null,
         }
     },
     async created() {
-        this.title =  localStorage.getItem('title_course');
-        this.id =  localStorage.getItem('shop_id');
         this.menus = await MenuService.getMenubyID(this.id);
-        this.items = await ItemService.getItem();
-        this.menus.forEach(async (element) => {
-             this.n[element.name] = JSON.stringify(element);
-        });
-        console.log(this.n);
+        var c = [{'id':1,'price':2,'quantity':3}];
+        var x= {'id':2,'price':2,'quantity':3};
+        c.push(x);
+        console.log(c);
+        localStorage.setItem('c',JSON.stringify(c));
+        console.log(JSON.stringify(c));
+        console.log(localStorage.getItem('c'));
 
+  
+        if(localStorage.getItem('m_id')===null){
+          this.items = await ItemService.findItembyMenu(this.menus[0].id);
+          this.items.forEach(async (element) => {
+             element.quantity = 0;
+             console.log(element);
+        })
+        }
+        else{
+          this.items = await ItemService.findItembyMenu(localStorage.getItem('m_id'));
+          this.items.forEach(async (element) => {
+             element.quantity = 0;
+             console.log(element);
+        })
+        }
+        
     },
     methods: {
       async menuSelected(id){
-          console.log(id);
+          localStorage.setItem('m_id',id);
           this.items = await ItemService.findItembyMenu(id);
+          this.items.forEach(async (element) => {
+             element.quantity = 0;
+             console.log(element);
+        })
       },
-       increment() {
-      this.quantity++;
+      increment(item) {
+        item.quantity ++;
+        console.log(JSON.stringify(item));
+        var c = [];
+        c.push(JSON.stringify(item));
+        console.log(c);
       },
-      decrement() {
-      if (this.quantity === 0) {
-        this.quantity = 0;
+      decrement(item  ) {
+      if (item.quantity == 0) {
+        item.quantity = 0;
+
       } else {
-        this.quantity--;
+        item.quantity --;
+        this.total -= item.quantity*item.price;
       }
       }
     },
@@ -104,7 +127,6 @@ export default {
     padding-top: 30px;
   }
   .button{
-    padding-right: 240px;
-    padding-left: 60px;
+    padding-right: 270px;
   }
 </style>
