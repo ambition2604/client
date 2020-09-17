@@ -4,12 +4,12 @@
       <div><img src="./static/food2.jpeg" alt="noimage"></div>
     </div>
     <div style="margin-bottom: 0.5px;">
-    <nav class="navbar navbar-dark bg-warning navv" style="font-family: Comic Sans MS;">
+    <nav class="navbar navbar-dark bg-warning navv" style="font-family: Comic Sans MS;padding-left:150px">
       <router-link class="navbar-brand" to="/">Home</router-link> 
       <router-link class="navbar-brand" to="/course">Course</router-link> 
       <router-link class="navbar-brand" to="/order">Order</router-link> 
       <p v-on:click="logout()"><router-link class="navbar-brand" to="/login" >Logout</router-link></p>
-      <b-button v-b-modal.modal-1><b-icon icon="cart2"></b-icon></b-button>
+      <router-link class="navbar-brand" to="/bag"><b-button ><b-icon icon="cart2"></b-icon>{{count}}</b-button></router-link>
     </nav>
     </div>
     <router-view></router-view>
@@ -78,11 +78,23 @@ body {
 </style>
 <script>
 export default {
+  data() {
+    return {
+      count : localStorage.getItem('count')
+    }
+  },
   methods: {
       logout () {
       console.log('logout')
-      localStorage.setItem('token','None')
-      
+      localStorage.setItem('token','None');
+      var i = {"id":0,"name":"0","image":"0","price":0,"menu_id":0,"quantity":0};
+      var c =[];
+      c.push(i);
+      localStorage.setItem('items',JSON.stringify(c));
+      console.log(localStorage.getItem('items'));
+      localStorage.setItem('total',0);
+      localStorage.setItem('count',0);
+
   }
 }
 }

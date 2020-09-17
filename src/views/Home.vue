@@ -13,7 +13,7 @@
         <hr>
         <h5 v class="text"><strong>Shop :</strong>  {{ course.name }}</h5>
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
-        <h5 class="text"><strong>Created Date:</strong> {{course.createDate}}</h5>
+        <h5 class="text"><strong>Host :</strong>  {{ course.username }}</h5>
         <hr>
         <h5><button class="btn btn-success btn-lg btn-block" v-on:click="viewMenu(course.title,course.shop_id)">Join</button></h5>
         
@@ -45,14 +45,8 @@ export default {
   },
   async created() {
     try {
-      var c = await CourseService.getCourses();
+      this.courses = await CourseService.getCourses();
       this.shops = await ShopService.getShop();
-      c.forEach(async (element) => {
-      var n = await ShopService.getShopbyID(element.shop_id.valueOf());
-        element.shop = await n[0].name.valueOf();
-        element.phone = await n[0].phone.valueOf();
-      });
-      this.courses =await c;
     } catch (err) {
       this.error = err.message;
     }

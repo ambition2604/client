@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Order from '../views/Order.vue'
 import Menu from '../views/Menu.vue'
+import Bag from '../views/Bag.vue'
 
 Vue.use(VueRouter)
   
@@ -26,11 +27,6 @@ Vue.use(VueRouter)
     component: Login
   },
   {
-    path: '/child',
-    name: 'Child',
-    component: require('../views/Child.vue').default
-  },
-  {
     path: '/menu',
     name: 'Menu',
     component: Menu
@@ -39,6 +35,11 @@ Vue.use(VueRouter)
     path: '/order',
     name: 'Order',
     component: Order
+  },
+  {
+    path: '/bag',
+    name: 'Bag',
+    component: Bag
   },
 ]
 

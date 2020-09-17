@@ -14,16 +14,17 @@
         v-for="(item,index) in items"
         v-bind:item="item"
         v-bind:index="index"
-        v-bind:key="item._id">
+        v-bind:key="item.quantity">
         <div >
           <img class="img" src="https://cdn.tgdd.vn/Files/2020/05/16/1255894/cach-lam-com-lam-thom-ngon-deo-ngot-don-gian-chuan-vi-tay-bac.jpg" width="60%" height="60%" alt="">
-        <h5 style="font-family: Comic Sans MS;">{{ item.name }}</h5>
+        <h5 style="font-family: Comic Sans MS;"><strong>{{ item.name }}</strong></h5>
+        <h5 style="font-family: Comic Sans MS;">Price: {{ item.price }} VND</h5>
          <b-input-group class="button">
   <b-input-group-prepend>
     <b-btn variant="outline-info" @click="decrement(item)">-</b-btn>
   </b-input-group-prepend>
 
-  <b-form-input type="number" v-model="item.quantity" min="0" ></b-form-input>
+  <b-form-input type="number" v-model.lazy="item.quantity" min="0"  ></b-form-input>
 
   <b-input-group-append>
     <b-btn variant="outline-secondary"  @click="increment(item)">+</b-btn>
@@ -39,66 +40,111 @@
 import MenuService from '../service/MenuService'
 import ItemService from '../service/ItemService'
 export default {
+  
     data() {
         return {
            title: localStorage.getItem('title_course'),
            id:  localStorage.getItem('shop_id'),
            menus:[],
            items:[],
-           total: null,
+           count:localStorage.getItem('count'),
+           total:localStorage.getItem('total'),
+           c:JSON.parse(localStorage.getItem('items')),
+          
         }
     },
     async created() {
         this.menus = await MenuService.getMenubyID(this.id);
-        var c = [{'id':1,'price':2,'quantity':3}];
-        var x= {'id':2,'price':2,'quantity':3};
-        c.push(x);
-        console.log(c);
-        localStorage.setItem('c',JSON.stringify(c));
-        console.log(JSON.stringify(c));
-        console.log(localStorage.getItem('c'));
-
-  
-        if(localStorage.getItem('m_id')===null){
-          this.items = await ItemService.findItembyMenu(this.menus[0].id);
-          this.items.forEach(async (element) => {
-             element.quantity = 0;
-             console.log(element);
-        })
+        let k = JSON.parse(localStorage.getItem('items'));
+        
+        if(k[0].id == 0){
+          if(localStorage.getItem('items') != 0 ) {
+              var i = JSON.parse(localStorage.getItem('items'));
+          }
+          if(i != null){
+              this.items = await ItemService.findItembyMenu(this.menus[0].id,i);
+            }
+          else{
+              this.items = await ItemService.findItembyMenus(this.menus[0].id);
+          } 
+          console.log(i);
         }
         else{
-          this.items = await ItemService.findItembyMenu(localStorage.getItem('m_id'));
-          this.items.forEach(async (element) => {
-             element.quantity = 0;
-             console.log(element);
-        })
+          let i = JSON.parse(localStorage.getItem('items'));
+          if(i !== null){
+              this.items = await ItemService.findItembyMenu(localStorage.getItem('m_id'),i);
+            }
+          else{
+              this.items = await ItemService.findItembyMenus(this.menus[0].id);
+          } 
+          console.log(i);
+          
         }
         
     },
     methods: {
       async menuSelected(id){
           localStorage.setItem('m_id',id);
-          this.items = await ItemService.findItembyMenu(id);
-          this.items.forEach(async (element) => {
-             element.quantity = 0;
-             console.log(element);
-        })
+          let c = JSON.parse(localStorage.getItem('items'));
+          this.items = await ItemService.findItembyMenu(id,c);
+          console.log(c);
+          
+        
       },
-      increment(item) {
+      async increment(item) {
         item.quantity ++;
-        console.log(JSON.stringify(item));
-        var c = [];
-        c.push(JSON.stringify(item));
-        console.log(c);
-      },
-      decrement(item  ) {
-      if (item.quantity == 0) {
-        item.quantity = 0;
+        this.count ++;
+        this.total = this.count * item.price;
+        localStorage.setItem('count',this.count);
+        localStorage.setItem('total',this.total);
+        var check = 0;
+        this.c.forEach(element => {
+          if(element.id == item.id) check = 1; 
+          console.log(check);
+        });
+        if(check == 0){
+        this.c.push(item);
+        }
+        else{
+          this.c.forEach(element => {
+            if(element.id == item.id) element.quantity = item.quantity;
+          });
+        }
+        localStorage.setItem('items',JSON.stringify(this.c));
+        console.log(JSON.stringify(this.c));
 
-      } else {
+      },
+      async decrement(item  ) {
+        if(item.quantity== 0 || item.quantity==null) item.quantity== 0
+        else{
         item.quantity --;
-        this.total -= item.quantity*item.price;
-      }
+        this.count --;
+        this.total = this.count * item.price;
+        localStorage.setItem('count',this.count);
+        localStorage.setItem('total',this.total);
+        var check = 0;
+        this.c.forEach(element => {
+        if(element.id == item.id) check = 1; 
+            console.log(check);
+        });
+        if(check == 0 && item.quantity>0){
+          this.c.push(item);
+        }
+        else{
+          this.c.forEach(element => {
+            if(element.id == item.id) {
+                element.quantity = item.quantity;
+                if(element.quantity==0){
+                    var index = this.c.indexOf(element);
+                    this.c.splice(index,1);
+                }
+            }
+           
+          });
+        }
+        }
+        localStorage.setItem('items',JSON.stringify(this.c));
+        console.log(JSON.stringify(this.c));
       }
     },
 }
@@ -117,16 +163,17 @@ export default {
     padding-top: 8px;
     padding-bottom: 8px;
     font-family: Comic Sans MS;
+    text-align: center;
   }
   .img{
-    
+    padding-bottom: 2px;
   }
   .item{
-    padding-left: 200px;
+    padding-left: 150px;
     padding-bottom: 30px;
     padding-top: 30px;
   }
   .button{
-    padding-right: 270px;
+    padding-right: 350px;
   }
 </style>

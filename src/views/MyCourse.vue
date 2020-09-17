@@ -35,9 +35,9 @@
         <div class="rounded border border-light shadow nhome-each-course" >
         <h4 class="text-center" style="font-weight:bold">{{ course.title }}</h4>
         <hr>
-        <h5 v class="text"><strong>Shop :</strong>  {{ course.des }}</h5>
+        <h5 v class="text"><strong>Shop :</strong>  {{ course.name }}</h5>
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
-        <h5 class="text"><strong>Created Date:</strong> {{course.createDate}}</h5>
+        <h5 class="text"><strong>Created Date:</strong> {{course.des}}</h5>
         <h5 class="text"><strong>Status:</strong> {{course.status}}<button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.id)">Details</button></h5>
         
         </div>
@@ -75,18 +75,8 @@ export default {
       var end =   x.indexOf(',"username');
   
       var host_id = user.substring(start,end);
-      this.c = await CourseService.getCoursesbyId(host_id);
-      this.shops = await ShopService.getShop();
-      this.c.forEach(async (element) => {
-          var n = await ShopService.getShopbyID(element.shop_id.valueOf());
-      
-          if(!element.shop) element.shop = await n[0].name.valueOf();
-        
-          if(!element.phone) element.phone = await n[0].phone.valueOf();
-         
-      });
-      this.courses =await this.c;
-    
+      this.courses = await CourseService.getCoursesbyId(host_id);
+      this.shops = await ShopService.getShop(); 
     } catch (err) {
       this.error = err.message;
     }
