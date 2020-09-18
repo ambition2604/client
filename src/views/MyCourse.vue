@@ -2,7 +2,7 @@
   <div class="container" style="font-family: Comic Sans MS">
   <div>
   <b-button v-b-modal.modal-1><b-icon icon="plus-square"></b-icon></b-button>
-  <b-modal id="modal-1">
+  <b-modal id="modal-1" hide-footer="true" title="Add Course">
     <div>
 			<form class="form-group" style="font-family: Comic Sans MS">
         <label>Title</label><hr>

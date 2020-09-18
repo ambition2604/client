@@ -11,16 +11,18 @@ class ItemService{
         
         if (res)  return res.data;
     }
-    static async findItembyMenu(menu_id,items){
+    static async findItembyMenu(menu_id,items,course_id){
         var res = await axios.post(url1,{
             menu_id:menu_id,
-            items : items
+            items : items,
+            course_id:course_id,
         });
         if (res)  return res.data;
     }
-    static async findItembyMenus(menu_id){
+    static async findItembyMenus(menu_id,course_id){
         var res = await axios.post(url2,{
-            menu_id:menu_id
+            menu_id:menu_id,
+            course_id:course_id
         });
         if (res)  return res.data;
     }

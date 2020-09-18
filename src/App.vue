@@ -8,7 +8,7 @@
       <router-link class="navbar-brand" to="/">Home</router-link> 
       <router-link class="navbar-brand" to="/course">Course</router-link> 
       <router-link class="navbar-brand" to="/order">Order</router-link> 
-      <p v-on:click="logout()"><router-link class="navbar-brand" to="/login" >Logout</router-link></p>
+      <p v-on:click= "logout()"><router-link class="navbar-brand" to="/login" >Logout</router-link></p>
       <router-link class="navbar-brand" to="/bag"><b-button ><b-icon icon="cart2"></b-icon>{{count}}</b-button></router-link>
     </nav>
     </div>

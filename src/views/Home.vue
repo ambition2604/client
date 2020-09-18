@@ -15,7 +15,7 @@
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
         <h5 class="text"><strong>Host :</strong>  {{ course.username }}</h5>
         <hr>
-        <h5><button class="btn btn-success btn-lg btn-block" v-on:click="viewMenu(course.title,course.shop_id)">Join</button></h5>
+        <h5><button class="btn btn-success btn-lg btn-block" v-on:click="viewMenu(course.title,course.shop_id,course.id,course.username)">Join</button></h5>
         
         </div>
         </div>
@@ -63,9 +63,11 @@ export default {
             this.error = err.message;
         }
     },
-  async viewMenu(item,item1) {
+  async viewMenu(item,item1,item2,item3) {
     localStorage.setItem('title_course',item);
     localStorage.setItem('shop_id',item1);
+    localStorage.setItem('course_id',item2);
+    localStorage.setItem('host_name',item3);
     this.$router.push({ name: 'Menu'});
   }
   },
