@@ -37,8 +37,17 @@
         <hr>
         <h5 v class="text"><strong>Shop :</strong>  {{ course.name }}</h5>
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
-        <h5 class="text"><strong>Created Date:</strong> {{course.des}}</h5>
-        <h5 class="text"><strong>Status:</strong> {{course.status}}<button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.id)">Details</button></h5>
+        <h5 class="text"><strong>Created Date:</strong> 17 Sep 2020, 17:18</h5>
+        <hr>
+        <h5 class="text">
+         <select  @change="onChange(course.id,course.status)">
+            <option>{{course.status}}</option>
+            <option v-if="course.status == 'Opening'">Closing</option>
+            <option v-if="course.status == 'Closing'">Opening</option>
+          </select>
+
+          <button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course)">Details</button>
+          </h5>
         
         </div>
         </div>
@@ -59,7 +68,8 @@ export default {
       error: '',
       text: '',
       shops: [],
-      selected: '', 
+      selected: '',
+      selected_status:'', 
       input: {
                     title: "",
                     des: "",
@@ -96,8 +106,17 @@ export default {
         }
     },
   async viewCourseDetail(item) {
-       this.$router.push({ name: "Order",params: { u: item }});
-  }
+       this.$router.push({ name: "CourseDetail",params: { u: item }});
+  },
+  async update_status(status){
+    alert(status);
+  },
+  async onChange(course_id,course_status){
+    
+    this.$confirm("Are you sure?").then(() => {
+      CourseService.updateStatus(course_id,course_status);
+});
+  },
   },
 }
 </script>

@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 import MyCourse from '../views/MyCourse.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
-import Order from '../views/Order.vue'
 import Menu from '../views/Menu.vue'
 import Bag from '../views/Bag.vue'
-
+import MyCourseDetail from '../views/MyCourseDetail.vue'
+import Order from '../views/Order.vue'
 Vue.use(VueRouter)
   
   const routes = [
@@ -16,15 +16,9 @@ Vue.use(VueRouter)
     component: MyCourse
   },
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
+    path: '/course_detail',
+    name: 'CourseDetail',
+    component: MyCourseDetail
   },
   {
     path: '/menu',
@@ -32,15 +26,25 @@ Vue.use(VueRouter)
     component: Menu
   },
   {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
     path: '/order',
     name: 'Order',
     component: Order
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/bag',
     name: 'Bag',
     component: Bag
-  },
+  } 
 ]
 
 const router = new VueRouter({
@@ -58,12 +62,12 @@ router.beforeEach((to, from, next) => {
     // if the user is not authenticated, `next` is called twice
     else next()
     })
-  router.beforeEach((to, from, next) => {
+    router.beforeEach((to, from, next) => {
       if (from.name == 'Menu' ) {
         localStorage.removeItem('m_id');
         next();
       }
       // if the user is not authenticated, `next` is called twice
       else next()
-      }) 
+      })  
 export default router

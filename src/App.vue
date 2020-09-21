@@ -3,13 +3,13 @@
     <div class=" bg-container">
       <div><img src="./static/food2.jpeg" alt="noimage"></div>
     </div>
-    <div style="margin-bottom: 0.5px;">
+    <div style="margin-bottom: 0.5px;" class="routing" v-if="this.$route.path !== '/login'">
     <nav class="navbar navbar-dark bg-warning navv" style="font-family: Comic Sans MS;padding-left:150px">
       <router-link class="navbar-brand" to="/">Home</router-link> 
       <router-link class="navbar-brand" to="/course">Course</router-link> 
       <router-link class="navbar-brand" to="/order">Order</router-link> 
-      <p v-on:click= "logout()"><router-link class="navbar-brand" to="/login" >Logout</router-link></p>
-      <router-link class="navbar-brand" to="/bag"><b-button ><b-icon icon="cart2"></b-icon>{{count}}</b-button></router-link>
+      <div v-on:click= "logout()"><router-link class="navbar-brand" to="/login" ><b-icon icon="person-fill"></b-icon>Hi,Linh</router-link></div>
+      <router-link class="navbar-brand" to="/bag"><b-button variant="info"><b-icon icon="cart2"></b-icon>{{count}}</b-button></router-link>
     </nav>
     </div>
     <router-view></router-view>
@@ -63,7 +63,6 @@ body {
   padding: 1px 6px !important;
   font-size: 1em;
 }
-
 @media screen and (max-width: 991px) {
   .bg-img-desktop {
     display: none
@@ -73,12 +72,12 @@ body {
   .bg-img-mobile {
     display: none
   }
-
 }
 </style>
 <script>
 export default {
   data() {
+    
     return {
       count : localStorage.getItem('count')
     }
@@ -91,11 +90,10 @@ export default {
       var c =[];
       c.push(i);
       localStorage.setItem('items',JSON.stringify(c));
-      console.log(localStorage.getItem('items'));
       localStorage.setItem('total',0);
       localStorage.setItem('count',0);
-
+      this.$router.replace({ name: "Login" });
   }
 }
 }
-</script> 
+</script>
